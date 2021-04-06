@@ -1,30 +1,101 @@
 <?php
-class StrWizard{
+namespace Cipher;
 
-    public $c1,$c2,$chars;
+class StrWizard
+{
 
-    public function __construct(){
-        $this->c1=array_merge(range('A', 'Z'), range('a', 'z'),range(0,9));
-        $this->c2=str_split("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
-        $this->chars=array_merge($this->c1,$this->c2);
+    public array $chars,$symbols,$all;
+    public const LIMIT=32;
+
+    public function __construct()
+    {
+        $this->chars=array_merge(range('A', 'Z'), range('a', 'z'),range(0,9));
+        $this->symbols=str_split("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
+        $this->all=array_merge($this->chars,$this->symbols);
     }
 
-    /*
-    $tr_chars=array('Ç','ç','Ğ','ğ','İ','Ö','ö','Ü','ü');
-    üretilen metinde ne kadar tr karakter kullanılırsa, uretilendeki toplam uzunluk;
-    kullanılan tr karakter sayısı kadar artacak
-    */
-
-    //https://www.php.net/manual/tr/migration71.new-features.php   public function primitiveGenerator($arg):string{
-    public function primitiveGenerator($arg):string{
+    public function primitiveCipher(string $arg):string
+    {
         $secret="";
         for($i=0;$i<strlen($arg);$i++){
-            $randchar=array_rand($this->chars,1);
-            $secret.=$this->chars[$randchar];
+            $randChar=array_rand($this->chars,1);
+            $secret.=$this->chars[$randChar];
         }
         return $secret;
     }
-}
 
+    //callable
+
+    public function charCipher(string $arg,int $limit=self::LIMIT):string
+    {
+        $secret="";
+        for($i=0;$i<$limit;$i++){
+            $randChar=array_rand($this->chars,1);
+            $secret.=$this->chars[$randChar];
+        }
+        return $secret;
+    }
+
+    public function symbolCipher(string $arg,int $limit=self::LIMIT):string
+    {
+        $secret="";
+        for($i=0;$i<$limit;$i++){
+            $randChar=array_rand($this->symbols,1);
+            $secret.=$this->chars[$randChar];
+        }
+        return $secret;
+    }
+
+
+    public function delSpesificSymbols(array $delSourceArr):array
+    {
+        $temp = array_splice($this->symbols, 0, count($this->symbols));
+        foreach ($temp as $baseS){
+            foreach ($delSourceArr as $delS) {
+                if($baseS==$delS){
+                    unset($temp[array_search($delS,$temp)]);
+                }
+            }
+        }
+        return array_values($temp);
+    }
+
+    public function delSpesificChars(array $delSourceArr):array
+    {
+        $temp = array_splice($this->chars, 0, count($this->chars));
+        foreach ($temp as $baseS){
+            foreach ($delSourceArr as $delS) {
+                if($baseS==$delS){
+                    unset($temp[array_search($delS,$temp)]);
+                }
+            }
+        }
+        return array_values($temp);
+    }
+
+    public function delSpesificAllChars(array $delSourceArr):array
+    {
+        $temp = array_splice($this->all, 0, count($this->all));
+        foreach ($temp as $baseS){
+            foreach ($delSourceArr as $delS) {
+                if($baseS==$delS){
+                    unset($temp[array_search($delS,$temp)]);
+                }
+            }
+        }
+        return array_values($temp);
+    }
+
+
+}
+use \Cipher;
 $wiz=new StrWizard();
-echo $uretilen=$wiz->primitiveGenerator("say hello to my little function");
+$text="say hello to my little function";
+//print_r($wiz->delSpesificSymbols(array("#","$","%","&","@","[")));
+//print_r($wiz->delSpesificChars(array("0","A","a","X","x")));
+//print_r($wiz->delSpesificAllChars(array("0","A","a","X","x","[","]","#","!")));
+//echo $wiz->primitiveCipher("say hello to my little function");
+echo $result=$wiz->charCipher($text);
+echo strlen($result);
+echo $result=$wiz->charCipher($text,64);
+echo strlen($result);
