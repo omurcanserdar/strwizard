@@ -1,7 +1,7 @@
 <?php
-namespace Cipher;
+namespace Wizard;
 
-class StrWizard
+class Cipher
 {
 
     public array $chars,$symbols,$all;
@@ -13,6 +13,32 @@ class StrWizard
         $this->symbols=str_split("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
         $this->all=array_merge($this->chars,$this->symbols);
     }
+
+    /**
+     * @return array
+     */
+    public function getChars(): array
+    {
+        return $this->chars;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSymbols(): array
+    {
+        return $this->symbols;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAll(): array
+    {
+        return $this->all;
+    }
+
+
 
     public function primitiveCipher(string $arg):string
     {
@@ -58,55 +84,33 @@ class StrWizard
         return $secret;
     }
 
-
-    public function delSpesificSymbols(array $delSourceArr):array
-    {
-        $temp = array_splice($this->symbols, 0, count($this->symbols));
-        foreach ($temp as $baseS){
-            foreach ($delSourceArr as $delS) {
-                if($baseS==$delS){
-                    unset($temp[array_search($delS,$temp)]);
+    public function delSpesific(array $baseArr,array $delSourceArr):array{
+        $temp = array_splice($baseArr, 0, count($baseArr));
+        foreach ($temp as $base){
+            foreach ($delSourceArr as $del) {
+                if($base==$del){
+                    unset($temp[array_search($del,$temp)]);
                 }
             }
         }
         return array_values($temp);
     }
-
-    public function delSpesificChars(array $delSourceArr):array
-    {
-        $temp = array_splice($this->chars, 0, count($this->chars));
-        foreach ($temp as $baseS){
-            foreach ($delSourceArr as $delS) {
-                if($baseS==$delS){
-                    unset($temp[array_search($delS,$temp)]);
-                }
-            }
-        }
-        return array_values($temp);
-    }
-
-    public function delSpesificAllChars(array $delSourceArr):array
-    {
-        $temp = array_splice($this->all, 0, count($this->all));
-        foreach ($temp as $baseS){
-            foreach ($delSourceArr as $delS) {
-                if($baseS==$delS){
-                    unset($temp[array_search($delS,$temp)]);
-                }
-            }
-        }
-        return array_values($temp);
-    }
-
 
 }
-use \Cipher;
-$wiz=new StrWizard();
+use \Wizard;
+$cip=new Cipher();
 $text="say hello to my little function";
-//print_r($wiz->delSpesificSymbols(array("#","$","%","&","@","[")));
-//print_r($wiz->delSpesificChars(array("0","A","a","X","x")));
-//print_r($wiz->delSpesificAllChars(array("0","A","a","X","x","[","]","#","!")));
 //echo $wiz->primitiveCipher("say hello to my little function");
 //echo $wiz->charCipher($text);
 //echo $wiz->charCipher($text,64);
-echo $wiz->charCipher(64);
+
+/*
+print_r($cip->delSpesific($cip->getAll(),array("0","A","a","X","x","[","]","#","!")));
+print_r($cip->getAll());
+print_r($cip->delSpesific($cip->getChars(),array("0","A","a","X","x")));
+print_r($cip->getChars());
+print_r($cip->delSpesific($cip->getSymbols(),array("#","$","%","&","@","[")));
+print_r($cip->getSymbols());
+*/
+
+echo $cip->charCipher(64);
