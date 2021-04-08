@@ -38,47 +38,11 @@ class Cipher
         return $this->all;
     }
 
-
-
     public function primitiveCipher(string $arg):string
     {
         $secret="";
         for($i=0;$i<strlen($arg);$i++){
             $randChar=array_rand($this->chars,1);
-            $secret.=$this->chars[$randChar];
-        }
-        return $secret;
-    }
-
-    //callable
-
-    /*
-    public function charCipher(string $arg,int $limit=self::LIMIT):string
-    {
-        $secret="";
-        for($i=0;$i<$limit;$i++){
-            $randChar=array_rand($this->chars,1);
-            $secret.=$this->chars[$randChar];
-        }
-        return $secret;
-    }
-    */
-
-    public function charCipher(int $limit=self::LIMIT):string
-    {
-        $secret="";
-        for($i=0;$i<$limit;$i++){
-            $randChar=array_rand($this->chars,1);
-            $secret.=$this->chars[$randChar];
-        }
-        return $secret;
-    }
-
-    public function symbolCipher(string $arg,int $limit=self::LIMIT):string
-    {
-        $secret="";
-        for($i=0;$i<$limit;$i++){
-            $randChar=array_rand($this->symbols,1);
             $secret.=$this->chars[$randChar];
         }
         return $secret;
@@ -96,6 +60,30 @@ class Cipher
         return array_values($temp);
     }
 
+    //callable
+
+    public function cipher(array $baseArr,int $limit=self::LIMIT):string
+    {
+        $secret="";
+        for($i=0;$i<$limit;$i++){
+            $randChar=array_rand($baseArr,1);
+            $secret.=$baseArr[$randChar];
+        }
+        return $secret;
+    }
+
+    /*
+    public function symbolCipher(string $arg,int $limit=self::LIMIT):string
+    {
+        $secret="";
+        for($i=0;$i<$limit;$i++){
+            $randChar=array_rand($this->symbols,1);
+            $secret.=$this->chars[$randChar];
+        }
+        return $secret;
+    }
+    */
+
 }
 use \Wizard;
 $cip=new Cipher();
@@ -112,5 +100,9 @@ print_r($cip->getChars());
 print_r($cip->delSpesific($cip->getSymbols(),array("#","$","%","&","@","[")));
 print_r($cip->getSymbols());
 */
-
-echo $cip->charCipher(64);
+$cip=new Cipher();
+print_r($cip->getAll());
+$arr=$cip->delSpesific($cip->getAll(),array("0","A","a","X","x","[","]","#","!"));
+print_r($arr);
+echo $cip->cipher($arr);
+echo $cip->cipher($arr,64);
