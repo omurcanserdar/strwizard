@@ -72,6 +72,14 @@ class Cipher
         return $secret;
     }
 
+    public function looper(int $limit, array $arr):array{
+        $myarr=array();
+        for($i=0;$i<$limit;$i++){
+            array_push($myarr,call_user_func_array(array($this,'cipher'),array($arr)));
+        }
+        return $myarr;
+    }
+
     /*
     public function symbolCipher(string $arg,int $limit=self::LIMIT):string
     {
@@ -101,8 +109,9 @@ print_r($cip->delSpesific($cip->getSymbols(),array("#","$","%","&","@","[")));
 print_r($cip->getSymbols());
 */
 $cip=new Cipher();
-print_r($cip->getAll());
+//print_r($cip->getAll());
 $arr=$cip->delSpesific($cip->getAll(),array("0","A","a","X","x","[","]","#","!"));
-print_r($arr);
-echo $cip->cipher($arr);
-echo $cip->cipher($arr,64);
+//print_r($arr);
+//echo $cip->cipher($arr);
+//echo $cip->cipher($arr,64);
+print_r($cip->looper(23,$arr));
