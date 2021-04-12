@@ -4,14 +4,14 @@ namespace Wizard;
 class Cipher
 {
 
-    public array $chars,$symbols,$all;
+    public array $chars,$specials,$all;
     public const LIMIT=32;
 
     public function __construct()
     {
         $this->chars=array_merge(range('A', 'Z'), range('a', 'z'),range(0,9));
-        $this->symbols=str_split("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
-        $this->all=array_merge($this->chars,$this->symbols);
+        $this->specials=str_split("!\"#$%&'()*+,-./:;?@[\]^_`{|}~");
+        $this->all=array_merge($this->chars,$this->specials);
     }
 
     /**
@@ -25,9 +25,9 @@ class Cipher
     /**
      * @return array
      */
-    public function getSymbols(): array
+    public function getSpecials(): array
     {
-        return $this->symbols;
+        return $this->specials;
     }
 
     /**
@@ -81,11 +81,11 @@ class Cipher
     }
 
     /*
-    public function symbolCipher(string $arg,int $limit=self::LIMIT):string
+    public function specialCipher(string $arg,int $limit=self::LIMIT):string
     {
         $secret="";
         for($i=0;$i<$limit;$i++){
-            $randChar=array_rand($this->symbols,1);
+            $randChar=array_rand($this->specials,1);
             $secret.=$this->chars[$randChar];
         }
         return $secret;
@@ -105,8 +105,8 @@ print_r($cip->delSpesific($cip->getAll(),array("0","A","a","X","x","[","]","#","
 print_r($cip->getAll());
 print_r($cip->delSpesific($cip->getChars(),array("0","A","a","X","x")));
 print_r($cip->getChars());
-print_r($cip->delSpesific($cip->getSymbols(),array("#","$","%","&","@","[")));
-print_r($cip->getSymbols());
+print_r($cip->delSpesific($cip->getSpecials(),array("#","$","%","&","@","[")));
+print_r($cip->getSpecials());
 */
 $cip=new Cipher();
 //print_r($cip->getAll());
