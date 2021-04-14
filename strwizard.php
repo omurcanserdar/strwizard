@@ -10,7 +10,7 @@ class Cipher
     public function __construct()
     {
         $this->chars=array_merge(range('A', 'Z'), range('a', 'z'),range(0,9));
-        $this->specials=str_split("!\"#$%&'()*+,-./:;?@[\]^_`{|}~");
+        $this->specials=str_split("!\#$%&()*+,-./:;?@[\]^_{|}~");
         $this->all=array_merge($this->chars,$this->specials);
     }
 
@@ -72,10 +72,10 @@ class Cipher
         return $secret;
     }
 
-    public function looper(int $limit, array $arr):array{
+    public function looper(int $looperLenght,array $arr,int $cipherLenght):array{
         $myarr=array();
-        for($i=0;$i<$limit;$i++){
-            array_push($myarr,call_user_func_array(array($this,'cipher'),array($arr)));
+        for($i=0;$i<$looperLenght;$i++){
+            array_push($myarr,call_user_func_array(array($this,'cipher'),array($arr,$cipherLenght)));
         }
         return $myarr;
     }
@@ -114,4 +114,5 @@ $arr=$cip->delSpesific($cip->getAll(),array("0","A","a","X","x","[","]","#","!")
 //print_r($arr);
 //echo $cip->cipher($arr);
 //echo $cip->cipher($arr,64);
-print_r($cip->looper(23,$arr));
+//print_r($cip->looper(23,$arr));
+print_r($cip->looper(23,$arr,48));
