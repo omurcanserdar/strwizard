@@ -72,10 +72,10 @@ class Cipher
         return $secret;
     }
 
-    public function looper(int $looperLenght,array $arr,int $cipherLenght):array{
+    public function looper(int $looperLength,array $arr,int $cipherLength):array{
         $myarr=array();
-        for($i=0;$i<$looperLenght;$i++){
-            array_push($myarr,call_user_func_array(array($this,'cipher'),array($arr,$cipherLenght)));
+        for($i=0;$i<$looperLength;$i++){
+            array_push($myarr,call_user_func_array(array($this,'cipher'),array($arr,$cipherLength)));
         }
         return $myarr;
     }
